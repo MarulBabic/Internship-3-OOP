@@ -35,8 +35,10 @@ namespace ProjectManagerApp.Classes
                         ProjectActions.GetTasksForNext7Days();
                         break;
                     case 5:
+                        ProjectActions.FilterProjectByStatus();
                         break;
                     case 6:
+                        ManageSingleProject.Menu();
                         break;
                     case 7:
                         break;

@@ -9,7 +9,7 @@ namespace ProjectManagerApp
     public enum ProjectStatus
     {
         Active,
-        OnWait,
+        Pending,
         Finished
     }
 
