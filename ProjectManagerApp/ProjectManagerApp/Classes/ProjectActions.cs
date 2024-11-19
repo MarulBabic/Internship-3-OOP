@@ -18,7 +18,7 @@ namespace ProjectManagerApp.Classes
 
             if (filteredProjects.Count == 0)
             {
-                Console.WriteLine($"Nema projekata sa statusom: {status}");
+                Console.WriteLine($"\nNema projekata sa statusom: {status}");
             }
             else
             {
@@ -41,13 +41,13 @@ namespace ProjectManagerApp.Classes
                 input = Console.ReadLine().Trim().ToLower();
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    Console.WriteLine("Unos nesmije biti prazan,unesite status: (aktivan,zavrsen,ceka)");
+                    Console.WriteLine("\nUnos nesmije biti prazan,unesite status: (aktivan,zavrsen,ceka)");
                     continue;
                 }
 
                 if (input != "aktivan" && input != "zavrsen" && input != "ceka")
                 {
-                    Console.WriteLine("Pogresan unos pokusajte ponovno: (aktivan,zavrsen,ceka)");
+                    Console.WriteLine("\nPogresan unos pokusajte ponovno: (aktivan,zavrsen,ceka)");
                     continue;
                 }
                 break;
@@ -105,6 +105,13 @@ namespace ProjectManagerApp.Classes
 
             Project projectToDelete = FindProject();
 
+            var confirm = Confirm();
+
+            if (!confirm)
+            {
+                Console.WriteLine("Odustajete od izbora, povratak na pocetni izbornik");
+                return;
+            }
             Program.projects.Remove(projectToDelete);
             Console.WriteLine($"\nProjekt \"{projectToDelete.projectName}\" uspješno obrisan.");
         }
@@ -218,6 +225,26 @@ namespace ProjectManagerApp.Classes
             } while (true);
 
             return project;
+        }
+
+        public static bool Confirm()
+        {
+            Console.WriteLine("\nJeste li sigurni da zelite izbrisati zadatak ili projekt(da ; ne)");
+            string choice = string.Empty;
+
+            do
+            {
+                Console.Write("\nUnos: ");
+                choice = Console.ReadLine().Trim().ToLower();
+                if(choice != "da" && choice != "ne")
+                {
+                    Console.WriteLine("\nPogresan unos unesite da ili ne");
+                    continue;
+                }
+                break;
+            } while (true);
+
+            return choice == "da" ? true : false;
         }
 
         public static void PrintAllProjectsWithTasks()

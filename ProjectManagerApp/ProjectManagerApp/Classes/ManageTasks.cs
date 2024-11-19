@@ -12,7 +12,9 @@ namespace ProjectManagerApp.Classes
 
         public static void Menu()
         {
-            Console.WriteLine("\n1 - Prikaz detalja odabranog zadatka\n2 - Uredivanje statusa zadatka");
+            Console.Clear();
+            Console.WriteLine("\n1 - Prikaz detalja odabranog zadatka\n2 - Uredivanje statusa zadatka" +
+                "\n3 - Povratak na pocetni izbornik");
 
             var choice = 0;
             do
@@ -27,6 +29,9 @@ namespace ProjectManagerApp.Classes
                         return;
                     case 2:
                         EditTaskStatus();
+                        return;
+                    case 3:
+                        Console.Clear();
                         return;
                     default:
                         Console.WriteLine("\nPogresan odabir, pokusajte ponovno");
@@ -43,7 +48,13 @@ namespace ProjectManagerApp.Classes
 
             Project project = ManageSingleProject.CheckProjectStatus();
 
-            Console.WriteLine("\nUnesite naziv zadatka\n");
+            if (Program.projects[project].Count == 0)
+            {
+                Console.WriteLine("\nIzabrani projekt nema zadataka");
+                return;
+            }
+
+            Console.WriteLine("\nUnesite naziv zadatka");
 
             PrintTasksNames(project);
 
@@ -149,11 +160,17 @@ namespace ProjectManagerApp.Classes
 
         private static void ShowTaskDetails()
         {
-            Console.WriteLine("\nUnesite naziv projekta\n");
+            Console.WriteLine("\nUnesite naziv projekta");
 
             PrintProjectsNames();
 
             Project project = ProjectActions.FindProject();
+
+            if (Program.projects[project].Count == 0)
+            {
+                Console.WriteLine("\nIzabrani projekt nema zadataka");
+                return;
+            }
 
             Console.WriteLine("\nUnesite naziv zadatka\n");
 
@@ -214,6 +231,14 @@ namespace ProjectManagerApp.Classes
            
             var task = FindTask(project,taskName);
 
+            bool confirm = ProjectActions.Confirm();
+
+            if (!confirm)
+            {
+                Console.WriteLine("\nOdustajete od izbora, povratak na pocetni izbornik");
+                return;
+            }
+
             Program.projects[project].Remove(task);
 
             Console.WriteLine($"\n----Zadatak uspjesno izbrisan.----");
@@ -272,7 +297,7 @@ namespace ProjectManagerApp.Classes
             var newTask = new Task(taskName, description, deadline, TaskStatus.Active, expectedDuration, project.projectName, project.GetId());
             Program.projects[project].Add(newTask);
 
-            Console.WriteLine($"Zadatak: {newTask.taskName} uspjesno dodan u projekt: {project.projectName}");
+            Console.WriteLine($"\nZadatak: {newTask.taskName} uspjesno dodan u projekt: {project.projectName}");
 
         }
 
@@ -282,6 +307,7 @@ namespace ProjectManagerApp.Classes
             int expectedDurationMinutes;
             do
             {
+                Console.Write("\nUnos: ");
                 var durationInput = Console.ReadLine().Trim();
 
                 if (int.TryParse(durationInput, out expectedDurationMinutes) && expectedDurationMinutes > 0)

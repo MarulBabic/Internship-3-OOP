@@ -10,41 +10,50 @@ namespace ProjectManagerApp.Classes
     {
         public static void Menu()
         {
+            Console.Clear();
             Console.WriteLine("\n1 - Ispis svih zadataka unutar odabranog projekta\n" +
                   "2 - Prikaz detalja odabranog projekta\n" +
                   "3 - Uređivanje statusa projekta\n" +
                   "4 - Dodavanje zadatka unutar projekta\n" +
                   "5 - Brisanje zadatka iz projekta\n" +
-                  "6 - Prikaz ukupno očekivanog vremena potrebnog za sve aktivne zadatke u projektu\n");
+                  "6 - Prikaz ukupno očekivanog vremena potrebnog za sve aktivne zadatke u projektu\n" +
+                  "7 - Povratak na pocetni izbornik\n");
 
 
             var option = 0;
-            Console.Write("\nUnos: ");
-            int.TryParse(Console.ReadLine(), out option);
+            do
+            {
+                Console.Write("\nUnos: ");
+                int.TryParse(Console.ReadLine(), out option);
 
-            switch (option) {
-                case 1:
-                    PrintAllTasksForProject();
-                    break;
-                case 2:
-                    ViewProjectDetails();
-                    break;
-                case 3:
-                    EditProjectStatus();
-                    break;
-                case 4:
-                    AddTaskForProject();
-                    break;
-                case 5:
-                    DeleteTaskFromProject();
-                    break;
-                case 6:
-                    CalculateTotalExpectedTimeForActiveTasks();
-                    break;
-                default:
-                    Console.WriteLine("\nPogresan unos, pokusajte ponovo");
-                    break;
-            }
+                switch (option)
+                {
+                    case 1:
+                        PrintAllTasksForProject();
+                        break;
+                    case 2:
+                        ViewProjectDetails();
+                        break;
+                    case 3:
+                        EditProjectStatus();
+                        break;
+                    case 4:
+                        AddTaskForProject();
+                        break;
+                    case 5:
+                        DeleteTaskFromProject();
+                        break;
+                    case 6:
+                        CalculateTotalExpectedTimeForActiveTasks();
+                        break;
+                    case 7:
+                        Console.Clear();
+                        return;
+                    default:
+                        Console.WriteLine("\nPogresan unos, pokusajte ponovo");
+                        break;
+                }
+            }while (true);
         }
 
         public static void CalculateTotalExpectedTimeForActiveTasks()
