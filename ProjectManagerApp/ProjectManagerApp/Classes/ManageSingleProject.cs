@@ -36,10 +36,10 @@ namespace ProjectManagerApp.Classes
                     AddTaskForProject();
                     break;
                 case 5:
-
+                    DeleteTaskFromProject();
                     break;
                 case 6:
-
+                    CalculateTotalExpectedTimeForActiveTasks();
                     break;
                 default:
                     Console.WriteLine("\nPogresan unos, pokusajte ponovo");
@@ -47,67 +47,91 @@ namespace ProjectManagerApp.Classes
             }
         }
 
-        public static void AddTaskForProject()
+        public static void CalculateTotalExpectedTimeForActiveTasks()
         {
-            Console.WriteLine("Unesite naziv projekta u koji zelite dodati zadatak");
-            foreach (var projectt in Program.projects)
-            {
-                Console.WriteLine($"{projectt.Key.projectName}");
-            }
+            Console.WriteLine("\nUnesite naziv projekta da bi prikazali ukupno ocekivano vrijeme za sve aktivne zadatke u projektu\n");
+
+            ManageTasks.PrintProjectsNames();
 
             Project project = ProjectActions.FindProject();
 
-            ManageTasks.AddTask(project);
+            ManageTasks.GetExpectedDuration(project);
+        }
 
+        public static void DeleteTaskFromProject()
+        {
+            Console.WriteLine("\nUnesite naziv projekta iz kojeg zelite izbrisati zadatak\n");
+            
+            ManageTasks.PrintProjectsNames();
+
+            Project project = CheckProjectStatus();
+
+            ManageTasks.DeleteTask(project);
+
+        }
+
+        public static void AddTaskForProject()
+        {
+            Console.WriteLine("\nUnesite naziv projekta u koji zelite dodati zadatak\n");
+
+            ManageTasks.PrintProjectsNames();
+
+            Project project = CheckProjectStatus();
+            
+            ManageTasks.AddTask(project);
+        }
+
+        public static Project CheckProjectStatus()
+        {
+            Project project;
+
+            do
+            {
+                project = ProjectActions.FindProject();
+
+                if (project.status == ProjectStatus.Finished)
+                {
+                    Console.WriteLine($"\nProjekt: {project.projectName} ima status: zavrsen, pokusajte ponovo");
+                    continue;
+                }
+
+                break;
+            } while (true);
+
+            return project;
         }
 
         public static void EditProjectStatus()
         {
-            Console.WriteLine("Unesite naziv projekta kojem zelite urediti status");
-            foreach (var projectt in Program.projects)
-            {
-                Console.WriteLine($"{projectt.Key.projectName}");
-            }
+            Console.WriteLine("\nUnesite naziv projekta kojem zelite urediti status\n");
+            
+            ManageTasks.PrintProjectsNames();
 
-            Project project = ProjectActions.FindProject();
+            Project project = CheckProjectStatus();
+
             ProjectStatus projectStatus;
             do
             {
                 projectStatus = ProjectActions.EditProjectStatus();
                 if (project.status == projectStatus)
                 {
-                    Console.WriteLine("Projekt vec ima taj status,pokusajte sa drugim");
+                    Console.WriteLine("\nProjekt vec ima taj status,pokusajte sa drugim");
                     continue;
                 }
                 break;
             } while (true);
             project.status = projectStatus;
 
-            Console.WriteLine($"Status projekta: {project.projectName} promijenjen u {project.status}");
+            Console.WriteLine($"\nStatus projekta: {project.projectName} promijenjen u {project.status}");
         }
 
         public static void ViewProjectDetails()
         {
             Console.WriteLine("\nUnesite naziv projekta kojeg zelite vidjeti\n");
 
-            foreach (var projectt in Program.projects)
-            {
-                Console.WriteLine($"{projectt.Key.projectName}");
-            }
+            ManageTasks.PrintProjectsNames();
 
-            Project project = null;
-            do
-            {
-                string projectName = ProjectNameCheck();
-                project = Program.projects.Keys.FirstOrDefault(p => p.projectName.Equals(projectName, StringComparison.OrdinalIgnoreCase));
-
-                if (project == null)
-                {
-                    Console.WriteLine("Projekt s tim nazivom nije pronađen. Molimo unesite točan naziv projekta:");
-                    continue;
-                }
-                break;
-            } while (true);
+            Project project = ProjectActions.FindProject();
 
             ProjectActions.PrintProjectDetail(project);
         }
@@ -116,10 +140,7 @@ namespace ProjectManagerApp.Classes
         {
             Console.WriteLine("\nUnesite naziv projekta za prikaz zadataka:\n");
 
-            foreach (var project in Program.projects)
-            {
-                Console.WriteLine($"{project.Key.projectName}");
-            }
+            ManageTasks.PrintProjectsNames();
 
             Project selectedProject = ProjectActions.FindProject();
 
@@ -133,25 +154,6 @@ namespace ProjectManagerApp.Classes
             {
                 ProjectActions.PrintTasksForProject(selectedProject);
             }
-        }
-
-        public static string ProjectNameCheck()
-        {
-            var projectName = string.Empty;
-            do
-            {
-                Console.Write("\nUnos: ");
-                projectName = Console.ReadLine().Trim();
-
-                if (string.IsNullOrWhiteSpace(projectName))
-                {
-                    Console.WriteLine("Naziv projekta ne može biti prazan. Molimo unesite naziv projekta:");
-                    continue;
-                }
-                break;
-            }while(true);
-
-            return projectName;
         }
     }  
 }

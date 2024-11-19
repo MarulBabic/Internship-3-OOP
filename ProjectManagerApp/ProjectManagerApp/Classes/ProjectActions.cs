@@ -101,10 +101,7 @@ namespace ProjectManagerApp.Classes
         {
             Console.WriteLine("\nUnesite naziv projekta kojeg zelite izbrisati\n");
 
-            foreach(var project in Program.projects)
-            {
-                Console.WriteLine($"{project.Key.projectName}");
-            }
+            ManageTasks.PrintProjectsNames();
 
             Project projectToDelete = FindProject();
 
@@ -139,24 +136,25 @@ namespace ProjectManagerApp.Classes
             DateTime inputDate;
             if (isStart)
             {
-                Console.WriteLine("Unesite datum početka projekta (dd-MM-yyyy):");
+                Console.WriteLine("\nUnesite datum početka projekta (dd-MM-yyyy):");
             }
             else
             {
-                Console.WriteLine("Unesite datum završetka projekta (dd-MM-yyyy):");
+                Console.WriteLine("\nUnesite datum završetka projekta (dd-MM-yyyy):");
             }
 
             do
             {
+                Console.Write("\nUnos: ");
                 var input = Console.ReadLine();
                 if (!DateTime.TryParseExact(input, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out inputDate))
                 {
-                    Console.WriteLine("Unesite valjan datum u formatu (dd-MM-yyyy)");
+                    Console.WriteLine("\nUnesite valjan datum u formatu (dd-MM-yyyy)");
                     continue;
                 }
                 if(inputDate < DateTime.Now.Date)
                 {
-                    Console.WriteLine("Datum nemoze biti raniji od trenutnog,odaberite drugi datum");
+                    Console.WriteLine("\nDatum nemoze biti raniji od trenutnog,odaberite drugi datum");
                     continue;
                 }
                 break;
@@ -170,10 +168,11 @@ namespace ProjectManagerApp.Classes
             Console.WriteLine("\nUnesite opis:");
             do
             {
+                Console.Write("\nUnos: ");
                 desc = Console.ReadLine().Trim();
                 if (string.IsNullOrWhiteSpace(desc))
                 {
-                    Console.WriteLine("Opis nesmije biti prazan, unesite opis");
+                    Console.WriteLine("\nOpis nesmije biti prazan, unesite opis");
                     continue;
                 }
                 break;
@@ -185,20 +184,13 @@ namespace ProjectManagerApp.Classes
         public static string GetName()
         {
             Console.WriteLine("\nUnesite naziv projekta:");
-            var projectName = string.Empty;
+            var projectName = ManageTasks.NameCheck();
             do
             {
-                projectName = Console.ReadLine().Trim();
-
-                if (string.IsNullOrWhiteSpace(projectName))
-                {
-                    Console.WriteLine("Naziv projekta ne može biti prazan. Molimo unesite vrijednost:");
-                    continue;
-                }
-
                 if (Program.projects.Keys.Any(p => p.projectName.Equals(projectName, StringComparison.OrdinalIgnoreCase)))
                 {
-                    Console.WriteLine("Projekt s ovim nazivom već postoji. Molimo unesite drugi naziv:");
+                    Console.WriteLine("\nProjekt s ovim nazivom već postoji. Molimo unesite drugi naziv:");
+                    projectName = ManageTasks.NameCheck();
                     continue;
                 }
                 break;
@@ -214,12 +206,12 @@ namespace ProjectManagerApp.Classes
             Project project = null;
             do
             {
-                string projectName = ManageSingleProject.ProjectNameCheck();
+                string projectName = ManageTasks.NameCheck();
                 project = Program.projects.Keys.FirstOrDefault(p => p.projectName.Equals(projectName, StringComparison.OrdinalIgnoreCase));
 
                 if (project == null)
                 {
-                    Console.WriteLine("Projekt s tim nazivom nije pronađen. Molimo unesite točan naziv projekta:");
+                    Console.WriteLine("\nProjekt s tim nazivom nije pronađen. Molimo unesite točan naziv projekta:");
                     continue;
                 }
                 break;

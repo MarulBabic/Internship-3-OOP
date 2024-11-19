@@ -10,7 +10,7 @@ namespace ProjectManagerApp
         {
             var project1 = new Project("Prvi projekt", "izrada 1.projekta",DateTime.Now.AddDays(-30),DateTime.Now.AddDays(30),ProjectStatus.Active);
             var project2 = new Project("Drugi projekt", "izrada 2.projekta",DateTime.Now.AddDays(-60),DateTime.Now.AddDays(10),ProjectStatus.Active);
-            var project3 = new Project("Treci projekt", "izrada 3.projekta",DateTime.Now.AddDays(-20),DateTime.Now.AddDays(20),ProjectStatus.Pending);
+            var project3 = new Project("Treci projekt", "izrada 3.projekta",DateTime.Now.AddDays(-20),DateTime.Now.AddDays(20),ProjectStatus.Active);
 
             var task1 = new Task("zadatak 1 projekta 1", "izrada 1.zadatka", DateTime.Now.AddDays(8), TaskStatus.Active, 550, project1.projectName, project1.GetId());
             var task2 = new Task("zadatak 2 projekta 1", "izrada 2.zadatka", DateTime.Now.AddDays(10), TaskStatus.Active, 600, project1.projectName, project1.GetId());

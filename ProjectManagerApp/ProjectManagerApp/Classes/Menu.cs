@@ -41,6 +41,7 @@ namespace ProjectManagerApp.Classes
                         ManageSingleProject.Menu();
                         break;
                     case 7:
+                        ManageTasks.Menu();
                         break;
                     default:
                         Console.WriteLine("\nPogresan unos, pokusajte ponovo");
