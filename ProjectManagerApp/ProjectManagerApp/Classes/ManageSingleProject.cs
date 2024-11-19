@@ -27,19 +27,19 @@ namespace ProjectManagerApp.Classes
                     PrintAllTasksForProject();
                     break;
                 case 2:
-                    
+                    ViewProjectDetails();
                     break;
                 case 3:
-                    
+                    EditProjectStatus();
                     break;
                 case 4:
-                    
+                    AddTaskForProject();
                     break;
                 case 5:
-                    
+
                     break;
                 case 6:
-                    
+
                     break;
                 default:
                     Console.WriteLine("\nPogresan unos, pokusajte ponovo");
@@ -47,40 +47,81 @@ namespace ProjectManagerApp.Classes
             }
         }
 
-        public static void PrintAllTasksForProject()
+        public static void AddTaskForProject()
         {
-            Console.WriteLine("\nUnesite naziv projekta za prikaz zadataka:\n");
-
-            foreach(var project in Program.projects)
+            Console.WriteLine("Unesite naziv projekta u koji zelite dodati zadatak");
+            foreach (var projectt in Program.projects)
             {
-                Console.WriteLine($"{project.Key.projectName}");
+                Console.WriteLine($"{projectt.Key.projectName}");
             }
 
-            string projectName = string.Empty;
-            Project selectedProject = null;
+            Project project = ProjectActions.FindProject();
 
+            ManageTasks.AddTask(project);
+
+        }
+
+        public static void EditProjectStatus()
+        {
+            Console.WriteLine("Unesite naziv projekta kojem zelite urediti status");
+            foreach (var projectt in Program.projects)
+            {
+                Console.WriteLine($"{projectt.Key.projectName}");
+            }
+
+            Project project = ProjectActions.FindProject();
+            ProjectStatus projectStatus;
             do
             {
-                Console.Write("\nUnos: ");
-                projectName = Console.ReadLine().Trim();
-
-                if (string.IsNullOrWhiteSpace(projectName))
+                projectStatus = ProjectActions.EditProjectStatus();
+                if (project.status == projectStatus)
                 {
-                    Console.WriteLine("Naziv projekta ne može biti prazan. Molimo unesite naziv projekta:");
+                    Console.WriteLine("Projekt vec ima taj status,pokusajte sa drugim");
                     continue;
                 }
+                break;
+            } while (true);
+            project.status = projectStatus;
 
-                selectedProject = Program.projects.Keys.FirstOrDefault(p => p.projectName.Equals(projectName, StringComparison.OrdinalIgnoreCase));
+            Console.WriteLine($"Status projekta: {project.projectName} promijenjen u {project.status}");
+        }
 
-                if (selectedProject == null)
+        public static void ViewProjectDetails()
+        {
+            Console.WriteLine("\nUnesite naziv projekta kojeg zelite vidjeti\n");
+
+            foreach (var projectt in Program.projects)
+            {
+                Console.WriteLine($"{projectt.Key.projectName}");
+            }
+
+            Project project = null;
+            do
+            {
+                string projectName = ProjectNameCheck();
+                project = Program.projects.Keys.FirstOrDefault(p => p.projectName.Equals(projectName, StringComparison.OrdinalIgnoreCase));
+
+                if (project == null)
                 {
                     Console.WriteLine("Projekt s tim nazivom nije pronađen. Molimo unesite točan naziv projekta:");
                     continue;
                 }
-
                 break;
-
             } while (true);
+
+            ProjectActions.PrintProjectDetail(project);
+        }
+
+        public static void PrintAllTasksForProject()
+        {
+            Console.WriteLine("\nUnesite naziv projekta za prikaz zadataka:\n");
+
+            foreach (var project in Program.projects)
+            {
+                Console.WriteLine($"{project.Key.projectName}");
+            }
+
+            Project selectedProject = ProjectActions.FindProject();
 
             var tasks = Program.projects[selectedProject];
 
@@ -93,5 +134,24 @@ namespace ProjectManagerApp.Classes
                 ProjectActions.PrintTasksForProject(selectedProject);
             }
         }
-    }
+
+        public static string ProjectNameCheck()
+        {
+            var projectName = string.Empty;
+            do
+            {
+                Console.Write("\nUnos: ");
+                projectName = Console.ReadLine().Trim();
+
+                if (string.IsNullOrWhiteSpace(projectName))
+                {
+                    Console.WriteLine("Naziv projekta ne može biti prazan. Molimo unesite naziv projekta:");
+                    continue;
+                }
+                break;
+            }while(true);
+
+            return projectName;
+        }
+    }  
 }

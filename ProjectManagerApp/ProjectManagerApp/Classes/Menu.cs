@@ -13,7 +13,7 @@ namespace ProjectManagerApp.Classes
             do
             {
                 Console.WriteLine("\n1 - Ispis svih projekata sa zadacima\n2 - Dodavanje novog projekta\n3 - Brisanje projekta" + 
-                    "\n4 - Prikaz svih zadataka s rokom u sljedecih 7 dana\n5 - Prikaz projekata filtriranih po statusu(akitvni,zavrseni,na cekanju"+
+                    "\n4 - Prikaz svih zadataka s rokom u sljedecih 7 dana\n5 - Prikaz projekata filtriranih po statusu(akitvni,zavrseni,na cekanju)"+
                     "\n6 - Upravljanje pojedinim projektom\n7 - Upravljanje pojedinim zadatkom");
 
                 var option = 0;

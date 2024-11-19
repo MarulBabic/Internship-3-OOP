@@ -12,6 +12,27 @@ namespace ProjectManagerApp.Classes
     {
         public static void FilterProjectByStatus()
         {
+            ProjectStatus status = EditProjectStatus();
+
+            var filteredProjects = Program.projects.Where(p => p.Key.status == status).ToList();
+
+            if (filteredProjects.Count == 0)
+            {
+                Console.WriteLine($"Nema projekata sa statusom: {status}");
+            }
+            else
+            {
+                Console.WriteLine($"\nProjekti sa statusom {status}:\n");
+                foreach (var project in filteredProjects)
+                {
+                    Console.WriteLine($"Projekt: {project.Key.projectName}, Status: {project.Key.status}, Opis: {project.Key.projectDescription}");
+                }
+            }
+
+        }
+
+        public static ProjectStatus EditProjectStatus()
+        {
             Console.WriteLine("\nUnesite status: (aktivan,zavrsen,ceka)");
             var input = string.Empty;
             do
@@ -24,7 +45,7 @@ namespace ProjectManagerApp.Classes
                     continue;
                 }
 
-                if(input != "aktivan" && input != "zavrsen" && input != "ceka")
+                if (input != "aktivan" && input != "zavrsen" && input != "ceka")
                 {
                     Console.WriteLine("Pogresan unos pokusajte ponovno: (aktivan,zavrsen,ceka)");
                     continue;
@@ -32,7 +53,6 @@ namespace ProjectManagerApp.Classes
                 break;
 
             } while (true);
-
 
             ProjectStatus status;
             switch (input)
@@ -49,21 +69,7 @@ namespace ProjectManagerApp.Classes
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            var filteredProjects = Program.projects.Where(p => p.Key.status == status).ToList();
-
-            if (filteredProjects.Count == 0)
-            {
-                Console.WriteLine($"Nema projekata sa statusom: {status}");
-            }
-            else
-            {
-                Console.WriteLine($"\nProjekti sa statusom {status}:\n");
-                foreach (var project in filteredProjects)
-                {
-                    Console.WriteLine($"Projekt: {project.Key.projectName}, Status: {project.Key.status}, Opis: {project.Key.projectDescription}");
-                }
-            }
+            return status;
 
         }
 
@@ -100,31 +106,10 @@ namespace ProjectManagerApp.Classes
                 Console.WriteLine($"{project.Key.projectName}");
             }
 
-            Console.Write("\nUnos: ");
-            var chooseProject = string.Empty;
-            do
-            {
-                chooseProject = Console.ReadLine().Trim();
-                if (string.IsNullOrWhiteSpace(chooseProject)){
-                    Console.WriteLine("Unos nesmije biti prazan, pokusajte ponovo");
-                    continue;
-                }
+            Project projectToDelete = FindProject();
 
-                if (!Program.projects.Any(p => p.Key.projectName.Equals(chooseProject, StringComparison.OrdinalIgnoreCase)))
-                {
-                    Console.WriteLine("Projekt sa tim imenom nepostoji pokusajte sa drugim");
-                    continue;
-                }
-
-                var projectToDelete = Program.projects.FirstOrDefault(p => p.Key.projectName.Equals(chooseProject, StringComparison.OrdinalIgnoreCase));
-                Program.projects.Remove(projectToDelete.Key);
-                Console.WriteLine($"\nProjekt {chooseProject} uspješno obrisan.");
-                break;
-
-
-            } while (true);
-
-            
+            Program.projects.Remove(projectToDelete);
+            Console.WriteLine($"\nProjekt \"{projectToDelete.projectName}\" uspješno obrisan.");
         }
         public static void AddNewProject()
         {
@@ -182,7 +167,7 @@ namespace ProjectManagerApp.Classes
         public static string GetDesc()
         {
             var desc = string.Empty;
-            Console.WriteLine("Unesite opis projekta");
+            Console.WriteLine("\nUnesite opis:");
             do
             {
                 desc = Console.ReadLine().Trim();
@@ -191,8 +176,9 @@ namespace ProjectManagerApp.Classes
                     Console.WriteLine("Opis nesmije biti prazan, unesite opis");
                     continue;
                 }
+                break;
+            } while (true);
 
-            } while (string.IsNullOrWhiteSpace(desc));
             return desc;
         }
 
@@ -222,6 +208,26 @@ namespace ProjectManagerApp.Classes
             return projectName;
         }
 
+
+        public static Project FindProject()
+        {
+            Project project = null;
+            do
+            {
+                string projectName = ManageSingleProject.ProjectNameCheck();
+                project = Program.projects.Keys.FirstOrDefault(p => p.projectName.Equals(projectName, StringComparison.OrdinalIgnoreCase));
+
+                if (project == null)
+                {
+                    Console.WriteLine("Projekt s tim nazivom nije pronađen. Molimo unesite točan naziv projekta:");
+                    continue;
+                }
+                break;
+            } while (true);
+
+            return project;
+        }
+
         public static void PrintAllProjectsWithTasks()
         {
             if (Program.projects.Count == 0)
@@ -232,13 +238,7 @@ namespace ProjectManagerApp.Classes
 
             foreach (var project in Program.projects)
             {
-                Console.WriteLine("\n------------------------------------------");
-                Console.WriteLine($"Naziv projekta      : {project.Key.projectName}");
-                Console.WriteLine($"Opis projekta       : {project.Key.projectDescription}");
-                Console.WriteLine($"Datum pocetka       : {project.Key.startDate.ToShortDateString()}");
-                Console.WriteLine($"Datum zavrsetka     : {project.Key.finishDate.ToShortDateString()}");
-                Console.WriteLine($"Status projekta     : {project.Key.status}");
-                Console.WriteLine("------------------------------------------");
+                PrintProjectDetail(project.Key);
 
                 PrintTasksForProject(project.Key);
             }
@@ -252,28 +252,33 @@ namespace ProjectManagerApp.Classes
             }
             else
             {
-                Console.WriteLine("   Zadaci unutar projekta:");
+                Console.WriteLine("\n   Zadaci unutar projekta:");
                 foreach (var task in Program.projects[project])
                 {
-                    Console.WriteLine("   ----------------------------------");
-                    Console.WriteLine($"   Naziv zadatka       : {task.taskName}");
-                    Console.WriteLine($"   Opis zadatka        : {task.taskDescription}");
-                    Console.WriteLine($"   Rok za izvrsenje    : {task.deadline.ToShortDateString()}");
-                    Console.WriteLine($"   Status zadatka      : {task.status}");
-                    Console.WriteLine($"   Ocekivano trajanje  : {task.expectedDurationMinutes} minuta");
-                    Console.WriteLine("   ----------------------------------");
+                    PrintTaskDetails(task);
                 }
             }
         }
 
         public static void PrintTaskDetails(Task task)
         {
-            Console.WriteLine("------------------------------------------");
-            Console.WriteLine($"Naziv zadatka       : {task.taskName}");
-            Console.WriteLine($"Opis zadatka        : {task.taskDescription}");
-            Console.WriteLine($"Rok za izvršenje    : {task.deadline.ToShortDateString()}");
-            Console.WriteLine($"Status zadatka      : {task.status}");
-            Console.WriteLine($"Očekivano trajanje  : {task.expectedDurationMinutes} minuta");
+            Console.WriteLine("   ----------------------------------");
+            Console.WriteLine($"   Naziv zadatka       : {task.taskName}");
+            Console.WriteLine($"   Opis zadatka        : {task.taskDescription}");
+            Console.WriteLine($"   Rok za izvrsenje    : {task.deadline.ToShortDateString()}");
+            Console.WriteLine($"   Status zadatka      : {task.status}");
+            Console.WriteLine($"   Ocekivano trajanje  : {task.expectedDurationMinutes} minuta");
+            Console.WriteLine("   ----------------------------------");
+        }
+
+        public static void PrintProjectDetail(Project project)
+        {
+            Console.WriteLine("\n------------------------------------------");
+            Console.WriteLine($"Naziv projekta      : {project.projectName}");
+            Console.WriteLine($"Opis projekta       : {project.projectDescription}");
+            Console.WriteLine($"Datum pocetka       : {project.startDate.ToShortDateString()}");
+            Console.WriteLine($"Datum zavrsetka     : {project.finishDate.ToShortDateString()}");
+            Console.WriteLine($"Status projekta     : {project.status}");
             Console.WriteLine("------------------------------------------");
         }
     }

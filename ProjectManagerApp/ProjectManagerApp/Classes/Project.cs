@@ -37,7 +37,7 @@ namespace ProjectManagerApp.Classes
         }
 
 
-        public Guid getId()
+        public Guid GetId()
         {
             return projectId;
         }
