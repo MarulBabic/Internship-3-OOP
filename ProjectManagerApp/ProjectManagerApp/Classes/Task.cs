@@ -17,6 +17,22 @@ namespace ProjectManagerApp.Classes
         private Guid taskId;
         private Guid projectId {  get; set; }
 
+        public Priority priority;
+
+
+        public Task(string taskName, string taskDescription, DateTime deadline, TaskStatus status, int expectedDurationMinutes, string projectName, Guid id, Priority priority)
+        {
+            this.taskName = taskName;
+            this.taskDescription = taskDescription;
+            this.deadline = deadline;
+            this.status = status;
+            this.expectedDurationMinutes = expectedDurationMinutes;
+            this.projectName = projectName;
+            projectId = id;
+            taskId = Guid.NewGuid();
+            this.priority = priority;
+        }
+
         public Task(string taskName, string taskDescription,DateTime deadline,TaskStatus status,int expectedDurationMinutes,string projectName,Guid id)
         {
             this.taskName = taskName;
@@ -27,6 +43,7 @@ namespace ProjectManagerApp.Classes
             this.projectName = projectName;
             projectId = id;
             taskId = Guid.NewGuid();
+            priority = Priority.Medium;
         }
 
         public Task(string taskName, string taskDescription, DateTime deadline, int expectedDurationMinutes, string projectName, Guid id)
@@ -39,6 +56,7 @@ namespace ProjectManagerApp.Classes
             this.projectName = projectName;
             projectId = id;
             taskId = Guid.NewGuid();
+            priority = Priority.Medium;
         }
 
         public string GetProjectName()

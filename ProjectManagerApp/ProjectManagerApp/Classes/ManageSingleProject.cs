@@ -29,23 +29,29 @@ namespace ProjectManagerApp.Classes
                 switch (option)
                 {
                     case 1:
+                        Console.Clear();
                         PrintAllTasksForProject();
-                        break;
+                        return;
                     case 2:
+                        Console.Clear();
                         ViewProjectDetails();
-                        break;
+                        return;
                     case 3:
+                        Console.Clear();
                         EditProjectStatus();
-                        break;
+                        return;
                     case 4:
+                        Console.Clear();
                         AddTaskForProject();
-                        break;
+                        return;
                     case 5:
+                        Console.Clear();
                         DeleteTaskFromProject();
-                        break;
+                        return;
                     case 6:
+                        Console.Clear();
                         CalculateTotalExpectedTimeForActiveTasks();
-                        break;
+                        return;
                     case 7:
                         Console.Clear();
                         return;
@@ -133,6 +139,7 @@ namespace ProjectManagerApp.Classes
 
             Console.WriteLine($"\nStatus projekta: {project.projectName} promijenjen u {project.status}");
         }
+
 
         public static void ViewProjectDetails()
         {

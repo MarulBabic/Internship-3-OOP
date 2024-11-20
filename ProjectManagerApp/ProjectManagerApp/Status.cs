@@ -19,4 +19,11 @@ namespace ProjectManagerApp
         Finished,
         Delayed
     }
+
+    public enum Priority
+    {
+        High,
+        Medium,
+        Low
+    }
 }

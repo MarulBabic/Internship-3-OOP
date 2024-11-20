@@ -109,7 +109,7 @@ namespace ProjectManagerApp.Classes
 
             if (!confirm)
             {
-                Console.WriteLine("Odustajete od izbora, povratak na pocetni izbornik");
+                Console.WriteLine("\nOdustajete od izbora, povratak na pocetni izbornik");
                 return;
             }
             Program.projects.Remove(projectToDelete);
@@ -127,7 +127,7 @@ namespace ProjectManagerApp.Classes
 
             while (dateOfEnd < dateOfStart)
             {
-                Console.WriteLine("Datum završetka ne može biti prije datuma početka. Unesite ponovo datum završetka.");
+                Console.WriteLine("\nDatum završetka ne može biti prije datuma početka. Unesite ponovo datum završetka.");
                 dateOfEnd = GetDate(false);  
             }
 
@@ -206,7 +206,6 @@ namespace ProjectManagerApp.Classes
 
             return projectName;
         }
-
 
         public static Project FindProject()
         {

@@ -25,9 +25,11 @@ namespace ProjectManagerApp.Classes
                 switch (choice)
                 {
                     case 1:
+                        Console.Clear();
                         ShowTaskDetails();
                         return;
                     case 2:
+                        Console.Clear();
                         EditTaskStatus();
                         return;
                     case 3:
@@ -54,7 +56,7 @@ namespace ProjectManagerApp.Classes
                 return;
             }
 
-            Console.WriteLine("\nUnesite naziv zadatka");
+            Console.WriteLine("\nUnesite naziv zadatka\n");
 
             PrintTasksNames(project);
 
@@ -123,7 +125,7 @@ namespace ProjectManagerApp.Classes
                 case "zavrsen":
                     status = TaskStatus.Finished;
                     break;
-                case "ceka":
+                case "odgoden":
                     status = TaskStatus.Delayed;
                     break;
                 default:
@@ -134,10 +136,6 @@ namespace ProjectManagerApp.Classes
 
         private static Task CheckTaskStatus(Project project,string taskName)
         {
-            Console.WriteLine("\nUnesite naziv zadatka\n");
-
-            PrintTasksNames(project);
-
             Task task;
 
             do
@@ -160,7 +158,7 @@ namespace ProjectManagerApp.Classes
 
         private static void ShowTaskDetails()
         {
-            Console.WriteLine("\nUnesite naziv projekta");
+            Console.WriteLine("\nUnesite naziv projekta\n");
 
             PrintProjectsNames();
 
@@ -223,9 +221,9 @@ namespace ProjectManagerApp.Classes
 
         public static void DeleteTask(Project project)
         {
-            Console.WriteLine("\nUnesite naziv zadatka kojeg zelite izbrisati");
+            Console.WriteLine("\nUnesite naziv zadatka kojeg zelite izbrisati\n");
 
-            ProjectActions.PrintTasksForProject(project);
+            PrintTasksNames( project);
 
             var taskName = NameCheck();
            
@@ -316,7 +314,7 @@ namespace ProjectManagerApp.Classes
                 }
                 else
                 {
-                    Console.WriteLine("Molimo unesite ispravan broj minuta (pozitivan cijeli broj):");
+                    Console.WriteLine("\nMolimo unesite ispravan broj minuta (pozitivan cijeli broj):");
                 }
             } while (true);
 
@@ -333,7 +331,7 @@ namespace ProjectManagerApp.Classes
                 var input = Console.ReadLine();
                 if (!DateTime.TryParseExact(input, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out inputDate))
                 {
-                    Console.WriteLine("Unesite valjan datum u formatu (dd-MM-yyyy)");
+                    Console.WriteLine("\nUnesite valjan datum u formatu (dd-MM-yyyy)");
                     continue;
                 }
                 if (inputDate < DateTime.Now.Date)
