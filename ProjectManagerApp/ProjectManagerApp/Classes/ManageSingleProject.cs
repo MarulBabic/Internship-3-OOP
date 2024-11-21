@@ -62,7 +62,7 @@ namespace ProjectManagerApp.Classes
             }while (true);
         }
 
-        public static void CalculateTotalExpectedTimeForActiveTasks()
+        private static void CalculateTotalExpectedTimeForActiveTasks()
         {
             Console.WriteLine("\nUnesite naziv projekta da bi prikazali ukupno ocekivano vrijeme za sve aktivne zadatke u projektu\n");
 
@@ -73,7 +73,7 @@ namespace ProjectManagerApp.Classes
             ManageTasks.GetExpectedDuration(project);
         }
 
-        public static void DeleteTaskFromProject()
+        private static void DeleteTaskFromProject()
         {
             Console.WriteLine("\nUnesite naziv projekta iz kojeg zelite izbrisati zadatak\n");
             
@@ -85,7 +85,7 @@ namespace ProjectManagerApp.Classes
 
         }
 
-        public static void AddTaskForProject()
+        private static void AddTaskForProject()
         {
             Console.WriteLine("\nUnesite naziv projekta u koji zelite dodati zadatak\n");
 
@@ -116,7 +116,7 @@ namespace ProjectManagerApp.Classes
             return project;
         }
 
-        public static void EditProjectStatus()
+        private static void EditProjectStatus()
         {
             Console.WriteLine("\nUnesite naziv projekta kojem zelite urediti status\n");
             
@@ -141,7 +141,7 @@ namespace ProjectManagerApp.Classes
         }
 
 
-        public static void ViewProjectDetails()
+        private static void ViewProjectDetails()
         {
             Console.WriteLine("\nUnesite naziv projekta kojeg zelite vidjeti\n");
 
@@ -152,7 +152,7 @@ namespace ProjectManagerApp.Classes
             ProjectActions.PrintProjectDetail(project);
         }
 
-        public static void PrintAllTasksForProject()
+        private static void PrintAllTasksForProject()
         {
             Console.WriteLine("\nUnesite naziv projekta za prikaz zadataka:\n");
 

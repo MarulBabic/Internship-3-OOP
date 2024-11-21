@@ -82,7 +82,7 @@ namespace ProjectManagerApp.Classes
 
         }
 
-        public static void CheckFinalProjectStatus(Project project)
+        private static void CheckFinalProjectStatus(Project project)
         {
             bool allTasksFinished = Program.projects[project].All(task => task.status == TaskStatus.Finished);
 
@@ -210,7 +210,7 @@ namespace ProjectManagerApp.Classes
             }
 
             if (totalDuration > 0.0) {
-                Console.WriteLine($"\nUkupno ocekivano vrijeme za sve aktivne zadatke unutar projekta: {project.projectName}, je: {totalDuration}");
+                Console.WriteLine($"\nUkupno ocekivano vrijeme za sve aktivne zadatke unutar projekta: {project.projectName}, je: {totalDuration} minuta");
             }
             else
             {
@@ -243,7 +243,7 @@ namespace ProjectManagerApp.Classes
         }
 
 
-        public static Task FindTask(Project project,string taskName)
+        private static Task FindTask(Project project,string taskName)
         {
             Task task;
             do
@@ -336,7 +336,7 @@ namespace ProjectManagerApp.Classes
                 }
                 if (inputDate < DateTime.Now.Date)
                 {
-                    Console.WriteLine("Datum nemoze biti raniji od trenutnog,odaberite drugi datum");
+                    Console.WriteLine("\nDatum nemoze biti raniji od trenutnog,odaberite drugi datum");
                     continue;
                 }
                 break;
@@ -352,7 +352,7 @@ namespace ProjectManagerApp.Classes
             {
                 if (Program.projects[project].Any(t => t.taskName.Equals(taskName, StringComparison.OrdinalIgnoreCase)))
                 {
-                    Console.WriteLine("Zadatak s tim nazivom već postoji u projektu. Molimo unesite drugi naziv:");
+                    Console.WriteLine("\nZadatak s tim nazivom već postoji u projektu. Molimo unesite drugi naziv:");
                     taskName = NameCheck();
                     continue;
                 }

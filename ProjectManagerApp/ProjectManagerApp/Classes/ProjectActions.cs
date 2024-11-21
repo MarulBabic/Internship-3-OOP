@@ -83,7 +83,7 @@ namespace ProjectManagerApp.Classes
             {
                 foreach(var task in project.Value)
                 {
-                    if(task.deadline >= dateNow && task.deadline <= dateNow.AddDays(7))
+                    if(task.status != TaskStatus.Finished && task.deadline >= dateNow && task.deadline <= dateNow.AddDays(7))
                     {
                         hasTasks = true;
                         PrintTaskDetails(task);
@@ -138,7 +138,7 @@ namespace ProjectManagerApp.Classes
 
         }
 
-        public static DateTime GetDate(bool isStart)
+        private static DateTime GetDate(bool isStart)
         {
             DateTime inputDate;
             if (isStart)
@@ -188,7 +188,7 @@ namespace ProjectManagerApp.Classes
             return desc;
         }
 
-        public static string GetName()
+        private static string GetName()
         {
             Console.WriteLine("\nUnesite naziv projekta:");
             var projectName = ManageTasks.NameCheck();
